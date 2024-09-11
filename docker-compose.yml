@@ -8,7 +8,8 @@ services:
     ports:
       - "8080:8080"
     depends_on:
-      - db
+      db:
+        condition: service_healthy
     environment:
       - DB_HOST=db
       - DB_PORT=3306
@@ -24,9 +25,11 @@ services:
       MYSQL_ROOT_PASSWORD: example
       MYSQL_DATABASE: portfolio
     ports:
-      - "3306:3306"
+      - 3306:3306
     volumes:
-      - db-data:/var/lib/mysql
-
-volumes:
-  db-data:
+      - ./_shared_data/mysql_data/:/var/lib/mysql
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "--silent"]
+      interval: 1s
+      timeout: 5s
+      retries: 30

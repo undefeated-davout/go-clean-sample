@@ -1,14 +1,14 @@
 package main
 
 import (
-	"github.com/labstack/echo/v4"
+	"net/http"
 
+	"github.com/labstack/echo/v4"
 	"github.com/undefeated-davout/portfolio-simulator/app/framework_driver/db"
 	"github.com/undefeated-davout/portfolio-simulator/app/framework_driver/web"
 
 	// リポジトリ
 	"github.com/undefeated-davout/portfolio-simulator/app/framework_driver/db/repository"
-
 	// ユースケース
 	assetUsecase "github.com/undefeated-davout/portfolio-simulator/app/usecase/asset"
 	portfolioUsecase "github.com/undefeated-davout/portfolio-simulator/app/usecase/portfolio"
@@ -27,6 +27,10 @@ import (
 
 func main() {
 	e := echo.New()
+
+	e.GET("/health", func(c echo.Context) error {
+		return c.String(http.StatusOK, "OK")
+	})
 
 	// DBの接続
 	conn, err := db.NewMySQLConnection()
@@ -70,5 +74,5 @@ func main() {
 	userHandler.RegisterRoutes(e)
 
 	// サーバーの起動
-	e.Start(":8080")
+	e.Logger.Fatal(e.Start(":8080"))
 }

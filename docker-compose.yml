@@ -28,12 +28,5 @@ services:
     volumes:
       - db-data:/var/lib/mysql
 
-  python:
-    image: python:3.11.0
-    volumes:
-      - .:/app
-    working_dir: /app
-    command: bash -c "pip install yfinance"
-
 volumes:
   db-data:

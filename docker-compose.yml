@@ -1,0 +1,39 @@
+services:
+  app:
+    build:
+      context: .
+      dockerfile: infra/docker/app/Dockerfile
+    volumes:
+      - .:/go/src/app
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    environment:
+      - DB_HOST=db
+      - DB_PORT=3306
+      - DB_USER=root
+      - DB_PASSWORD=example
+      - DB_NAME=portfolio
+
+  db:
+    build:
+      context: .
+      dockerfile: infra/docker/db/Dockerfile
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: portfolio
+    ports:
+      - "3306:3306"
+    volumes:
+      - db-data:/var/lib/mysql
+
+  python:
+    image: python:3.11.0
+    volumes:
+      - .:/app
+    working_dir: /app
+    command: bash -c "pip install yfinance"
+
+volumes:
+  db-data:

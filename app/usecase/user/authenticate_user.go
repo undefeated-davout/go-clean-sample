@@ -21,7 +21,6 @@ func (uc *AuthenticateUserUseCase) Authenticate(email, password string) (*domain
 		return nil, err
 	}
 
-	// パスワードのハッシュを検証
 	err = bcrypt.CompareHashAndPassword([]byte(user.Password), []byte(password))
 	if err != nil {
 		return nil, errors.New("invalid password")

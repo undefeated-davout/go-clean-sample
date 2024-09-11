@@ -18,6 +18,5 @@ func (uc *AddAssetUseCase) AddAsset(ticker string, weight float64) error {
 		Weight: weight,
 	}
 
-	// リポジトリを使って資産を追加
 	return uc.assetRepo.Add(asset)
 }

@@ -14,13 +14,11 @@ func NewMySQLUserRepository(conn *sql.DB) domain.UserRepository {
 	return &MySQLUserRepository{conn: conn}
 }
 
-// Userエンティティを保存する
 func (r *MySQLUserRepository) Save(user domain.User) error {
 	_, err := r.conn.Exec("INSERT INTO users (name, email, password) VALUES (?, ?, ?)", user.Name, user.Email, user.Password)
 	return err
 }
 
-// UserエンティティをIDで取得する
 func (r *MySQLUserRepository) GetByID(id int) (*domain.User, error) {
 	row := r.conn.QueryRow("SELECT id, name, email, password FROM users WHERE id = ?", id)
 	user := &domain.User{}
@@ -31,7 +29,6 @@ func (r *MySQLUserRepository) GetByID(id int) (*domain.User, error) {
 	return user, nil
 }
 
-// Userエンティティをメールアドレスで取得する
 func (r *MySQLUserRepository) GetByEmail(email string) (*domain.User, error) {
 	row := r.conn.QueryRow("SELECT id, name, email, password FROM users WHERE email = ?", email)
 	user := &domain.User{}
@@ -42,7 +39,6 @@ func (r *MySQLUserRepository) GetByEmail(email string) (*domain.User, error) {
 	return user, nil
 }
 
-// Userエンティティを削除する
 func (r *MySQLUserRepository) Delete(id int) error {
 	_, err := r.conn.Exec("DELETE FROM users WHERE id = ?", id)
 	return err

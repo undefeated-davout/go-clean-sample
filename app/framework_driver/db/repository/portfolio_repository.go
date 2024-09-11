@@ -10,12 +10,10 @@ type MySQLPortfolioRepository struct {
 	conn *sql.DB
 }
 
-// NewMySQLPortfolioRepository は新しいPortfolioリポジトリを作成する
 func NewMySQLPortfolioRepository(conn *sql.DB) domain.PortfolioRepository {
 	return &MySQLPortfolioRepository{conn: conn}
 }
 
-// Save はPortfolioエンティティを保存する
 func (r *MySQLPortfolioRepository) Save(portfolio domain.Portfolio) error {
 	tx, err := r.conn.Begin()
 	if err != nil {
@@ -35,7 +33,7 @@ func (r *MySQLPortfolioRepository) Save(portfolio domain.Portfolio) error {
 		return err
 	}
 
-	// 各資産を保存
+	// 各銘柄を保存
 	for _, asset := range portfolio.Assets {
 		_, err := tx.Exec("INSERT INTO portfolio_assets (portfolio_id, ticker, weight) VALUES (?, ?, ?)", portfolioID, asset.Ticker, asset.Weight)
 		if err != nil {
@@ -47,7 +45,6 @@ func (r *MySQLPortfolioRepository) Save(portfolio domain.Portfolio) error {
 	return tx.Commit()
 }
 
-// GetByID はIDでPortfolioエンティティを取得する
 func (r *MySQLPortfolioRepository) GetByID(id int) (*domain.Portfolio, error) {
 	portfolio := &domain.Portfolio{}
 
@@ -57,7 +54,7 @@ func (r *MySQLPortfolioRepository) GetByID(id int) (*domain.Portfolio, error) {
 		return nil, err
 	}
 
-	// 資産情報を取得
+	// 銘柄情報を取得
 	rows, err := r.conn.Query("SELECT ticker, weight FROM portfolio_assets WHERE portfolio_id = ?", id)
 	if err != nil {
 		return nil, err
@@ -77,7 +74,6 @@ func (r *MySQLPortfolioRepository) GetByID(id int) (*domain.Portfolio, error) {
 	return portfolio, nil
 }
 
-// Delete はPortfolioエンティティを削除する
 func (r *MySQLPortfolioRepository) Delete(id int) error {
 	tx, err := r.conn.Begin()
 	if err != nil {

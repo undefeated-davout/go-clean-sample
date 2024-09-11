@@ -18,7 +18,6 @@ func NewAssetHandler(addAssetController *asset.AddAssetController, removeAssetCo
 	}
 }
 
-// RegisterRoutes は Asset に関連するルートを登録します
 func (h *AssetHandler) RegisterRoutes(e *echo.Echo) {
 	e.POST("/assets", h.addAssetController.Handle)
 	e.DELETE("/assets/:ticker", h.removeAssetController.Handle)

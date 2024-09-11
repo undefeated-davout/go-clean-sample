@@ -20,7 +20,6 @@ func NewUserHandler(createUserController *user.CreateUserController, authenticat
 	}
 }
 
-// RegisterRoutes は User に関連するルートを登録します
 func (h *UserHandler) RegisterRoutes(e *echo.Echo) {
 	e.POST("/users", h.createUserController.Handle)
 	e.POST("/users/auth", h.authenticateUserController.Handle)

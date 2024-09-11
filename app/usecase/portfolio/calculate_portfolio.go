@@ -25,8 +25,7 @@ func (uc *CalculatePortfolioUseCase) CalculatePortfolio(id int) (expectedReturn,
 		return 0, 0, 0, errors.New("no assets in the portfolio")
 	}
 
-	// ここにリスクやリターンを計算するロジックを追加する
+	// TODO: ここにリスクやリターンを計算するロジックを追加する
 	// 期待リターン、リスク、シャープレシオを返す
-
 	return 0.08, 0.15, 1.2, nil
 }

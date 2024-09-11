@@ -11,15 +11,12 @@ import (
 )
 
 func TestAddAsset(t *testing.T) {
-	// モックリポジトリのセットアップ
 	mockRepo := mock.NewMockAssetRepository()
 	addAssetUC := asset.NewAddAssetUseCase(mockRepo)
 
-	// アセット追加のテスト
 	err := addAssetUC.AddAsset("AAPL", 0.5)
 	assert.NoError(t, err, "Error should not have occurred when adding asset")
 
-	// アセットが正しく追加されたか確認
 	result, err := mockRepo.GetByTicker("AAPL")
 	assert.NoError(t, err, "Asset should have been found")
 	assert.Equal(t, "AAPL", result.Ticker)
@@ -27,18 +24,14 @@ func TestAddAsset(t *testing.T) {
 }
 
 func TestRemoveAsset(t *testing.T) {
-	// モックリポジトリのセットアップ
 	mockRepo := mock.NewMockAssetRepository()
 	removeAssetUC := asset.NewRemoveAssetUseCase(mockRepo)
 
-	// 事前にアセットを追加
 	mockRepo.Add(domain.Asset{Ticker: "AAPL", Weight: 0.5})
 
-	// アセット削除のテスト
 	err := removeAssetUC.RemoveAsset("AAPL")
 	assert.NoError(t, err, "Error should not have occurred when removing asset")
 
-	// アセットが削除されたか確認
 	_, err = mockRepo.GetByTicker("AAPL")
 	assert.Error(t, err, "Asset should not be found after deletion")
 }

@@ -4,17 +4,19 @@ import (
 	"net/http"
 
 	"github.com/labstack/echo/v4"
+
 	"github.com/undefeated-davout/portfolio-simulator/app/framework_driver/db"
 	"github.com/undefeated-davout/portfolio-simulator/app/framework_driver/web"
 
-	// リポジトリ
+	// repository
 	"github.com/undefeated-davout/portfolio-simulator/app/framework_driver/db/repository"
-	// ユースケース
+
+	// usecase
 	assetUsecase "github.com/undefeated-davout/portfolio-simulator/app/usecase/asset"
 	portfolioUsecase "github.com/undefeated-davout/portfolio-simulator/app/usecase/portfolio"
 	userUsecase "github.com/undefeated-davout/portfolio-simulator/app/usecase/user"
 
-	// コントローラー
+	// controller
 	addAssetController "github.com/undefeated-davout/portfolio-simulator/app/interface_adapter/controller/asset"
 	removeAssetContoller "github.com/undefeated-davout/portfolio-simulator/app/interface_adapter/controller/asset"
 	calculatePortfolioController "github.com/undefeated-davout/portfolio-simulator/app/interface_adapter/controller/portfolio"
@@ -32,18 +34,17 @@ func main() {
 		return c.String(http.StatusOK, "OK")
 	})
 
-	// DBの接続
 	conn, err := db.NewMySQLConnection()
 	if err != nil {
 		e.Logger.Fatal(err)
 	}
 
-	// リポジトリの作成
+	// repository
 	assetRepo := repository.NewMySQLAssetRepository(conn.DB)
 	portfolioRepo := repository.NewMySQLPortfolioRepository(conn.DB)
 	userRepo := repository.NewMySQLUserRepository(conn.DB)
 
-	// Usecaseの作成
+	// usecase
 	addAssetUC := assetUsecase.NewAddAssetUseCase(assetRepo)
 	removeAssetUC := assetUsecase.NewRemoveAssetUseCase(assetRepo)
 	createPortfolioUC := portfolioUsecase.NewCreatePortfolioUseCase(portfolioRepo)
@@ -53,7 +54,7 @@ func main() {
 	authenticateUserUC := userUsecase.NewAuthenticateUserUseCase(userRepo)
 	getUserUC := userUsecase.NewGetUserUseCase(userRepo)
 
-	// コントローラーの作成
+	// controller
 	addAssetController := addAssetController.NewAddAssetController(addAssetUC)
 	removeAssetController := removeAssetContoller.NewRemoveAssetController(removeAssetUC)
 	createPortfolioController := createPortfolioController.NewCreatePortfolioController(createPortfolioUC)
@@ -63,16 +64,16 @@ func main() {
 	authenticateUserController := authenticateUserController.NewAuthenticateUserController(authenticateUserUC)
 	getUserController := getUserController.NewGetUserController(getUserUC)
 
-	// ハンドラの作成
+	// handler
 	assetHandler := web.NewAssetHandler(addAssetController, removeAssetController)
 	portfolioHandler := web.NewPortfolioHandler(createPortfolioController, getPortfolioController, calculatePortfolioController)
 	userHandler := web.NewUserHandler(createUserController, authenticateUserController, getUserController)
 
-	// ルートの登録
+	// routing
 	assetHandler.RegisterRoutes(e)
 	portfolioHandler.RegisterRoutes(e)
 	userHandler.RegisterRoutes(e)
 
-	// サーバーの起動
+	// start server
 	e.Logger.Fatal(e.Start(":8080"))
 }

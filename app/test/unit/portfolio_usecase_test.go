@@ -11,11 +11,9 @@ import (
 )
 
 func TestCreatePortfolio(t *testing.T) {
-	// モックリポジトリのセットアップ
 	mockRepo := mock.NewMockPortfolioRepository()
 	createPortfolioUC := portfolio.NewCreatePortfolioUseCase(mockRepo)
 
-	// ポートフォリオ作成のテスト
 	testAssets := []domain.Asset{
 		{Ticker: "AAPL", Weight: 0.5},
 		{Ticker: "GOOGL", Weight: 0.5},
@@ -26,11 +24,9 @@ func TestCreatePortfolio(t *testing.T) {
 }
 
 func TestGetPortfolio(t *testing.T) {
-	// モックリポジトリのセットアップ
 	mockRepo := mock.NewMockPortfolioRepository()
 	getPortfolioUC := portfolio.NewGetPortfolioUseCase(mockRepo)
 
-	// ポートフォリオを事前に保存
 	mockRepo.Save(domain.Portfolio{
 		ID:   1,
 		Name: "Test Portfolio",
@@ -40,7 +36,6 @@ func TestGetPortfolio(t *testing.T) {
 		},
 	})
 
-	// ポートフォリオ取得のテスト
 	result, err := getPortfolioUC.GetPortfolio(1)
 	assert.NoError(t, err, "Error should not have occurred during portfolio retrieval")
 	assert.Equal(t, "Test Portfolio", result.Name)

@@ -13,6 +13,5 @@ func NewGetPortfolioUseCase(portfolioRepo domain.PortfolioRepository) *GetPortfo
 }
 
 func (uc *GetPortfolioUseCase) GetPortfolio(id int) (*domain.Portfolio, error) {
-	// リポジトリを使ってポートフォリオを取得
 	return uc.portfolioRepo.GetByID(id)
 }

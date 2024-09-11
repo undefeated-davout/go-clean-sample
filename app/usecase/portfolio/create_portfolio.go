@@ -18,6 +18,5 @@ func (uc *CreatePortfolioUseCase) CreatePortfolio(name string, assets []domain.A
 		Assets: assets,
 	}
 
-	// リポジトリを介してポートフォリオを保存
 	return uc.portfolioRepo.Save(portfolio)
 }

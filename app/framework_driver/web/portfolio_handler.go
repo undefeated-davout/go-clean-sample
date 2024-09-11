@@ -20,7 +20,6 @@ func NewPortfolioHandler(createPortfolioController *portfolio.CreatePortfolioCon
 	}
 }
 
-// RegisterRoutes は Portfolio に関連するルートを登録します
 func (h *PortfolioHandler) RegisterRoutes(e *echo.Echo) {
 	e.POST("/portfolios", h.createPortfolioController.Handle)
 	e.GET("/portfolios/:id", h.getPortfolioController.Handle)

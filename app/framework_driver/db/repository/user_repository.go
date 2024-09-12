@@ -10,6 +10,8 @@ type MySQLUserRepository struct {
 	conn *sql.DB
 }
 
+var _ domain.UserRepository = (*MySQLUserRepository)(nil)
+
 func NewMySQLUserRepository(conn *sql.DB) domain.UserRepository {
 	return &MySQLUserRepository{conn: conn}
 }

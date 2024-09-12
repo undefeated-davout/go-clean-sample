@@ -10,6 +10,8 @@ type MySQLPortfolioRepository struct {
 	conn *sql.DB
 }
 
+var _ domain.PortfolioRepository = (*MySQLPortfolioRepository)(nil)
+
 func NewMySQLPortfolioRepository(conn *sql.DB) domain.PortfolioRepository {
 	return &MySQLPortfolioRepository{conn: conn}
 }

@@ -8,6 +8,12 @@ type CreatePortfolioUseCase struct {
 	portfolioRepo domain.PortfolioRepository
 }
 
+type PortfolioCreator interface {
+	CreatePortfolio(name string, assets []domain.Asset) error
+}
+
+var _ PortfolioCreator = (*CreatePortfolioUseCase)(nil)
+
 func NewCreatePortfolioUseCase(portfolioRepo domain.PortfolioRepository) *CreatePortfolioUseCase {
 	return &CreatePortfolioUseCase{portfolioRepo: portfolioRepo}
 }

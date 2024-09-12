@@ -8,6 +8,12 @@ type RemoveAssetUseCase struct {
 	assetRepo domain.AssetRepository
 }
 
+type AssetRemover interface {
+	RemoveAsset(ticker string) error
+}
+
+var _ AssetRemover = (*RemoveAssetUseCase)(nil)
+
 func NewRemoveAssetUseCase(assetRepo domain.AssetRepository) *RemoveAssetUseCase {
 	return &RemoveAssetUseCase{assetRepo: assetRepo}
 }

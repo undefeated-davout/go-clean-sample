@@ -8,6 +8,13 @@ type GetUserUseCase struct {
 	userRepo domain.UserRepository
 }
 
+type UserGetter interface {
+	GetUserByID(id int) (*domain.User, error)
+	GetUserByEmail(email string) (*domain.User, error)
+}
+
+var _ UserGetter = (*GetUserUseCase)(nil)
+
 func NewGetUserUseCase(userRepo domain.UserRepository) *GetUserUseCase {
 	return &GetUserUseCase{userRepo: userRepo}
 }

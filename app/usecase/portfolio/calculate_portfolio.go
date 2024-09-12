@@ -10,6 +10,12 @@ type CalculatePortfolioUseCase struct {
 	portfolioRepo domain.PortfolioRepository
 }
 
+type PortfolioCalculator interface {
+	CalculatePortfolio(id int) (expectedReturn, risk, sharpeRatio float64, err error)
+}
+
+var _ PortfolioCalculator = (*CalculatePortfolioUseCase)(nil)
+
 func NewCalculatePortfolioUseCase(portfolioRepo domain.PortfolioRepository) *CalculatePortfolioUseCase {
 	return &CalculatePortfolioUseCase{portfolioRepo: portfolioRepo}
 }

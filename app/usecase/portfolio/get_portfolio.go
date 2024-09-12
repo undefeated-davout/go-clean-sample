@@ -8,6 +8,12 @@ type GetPortfolioUseCase struct {
 	portfolioRepo domain.PortfolioRepository
 }
 
+type PortfolioGetter interface {
+	GetPortfolio(id int) (*domain.Portfolio, error)
+}
+
+var _ PortfolioGetter = (*GetPortfolioUseCase)(nil)
+
 func NewGetPortfolioUseCase(portfolioRepo domain.PortfolioRepository) *GetPortfolioUseCase {
 	return &GetPortfolioUseCase{portfolioRepo: portfolioRepo}
 }

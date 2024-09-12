@@ -8,6 +8,12 @@ type AddAssetUseCase struct {
 	assetRepo domain.AssetRepository
 }
 
+type AssetAdder interface {
+	AddAsset(ticker string, weight float64) error
+}
+
+var _ AssetAdder = (*AddAssetUseCase)(nil)
+
 func NewAddAssetUseCase(assetRepo domain.AssetRepository) *AddAssetUseCase {
 	return &AddAssetUseCase{assetRepo: assetRepo}
 }

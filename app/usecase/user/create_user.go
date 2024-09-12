@@ -9,6 +9,12 @@ type CreateUserUseCase struct {
 	userRepo domain.UserRepository
 }
 
+type UserCreator interface {
+	CreateUser(name, email, password string) error
+}
+
+var _ UserCreator = (*CreateUserUseCase)(nil)
+
 func NewCreateUserUseCase(userRepo domain.UserRepository) *CreateUserUseCase {
 	return &CreateUserUseCase{userRepo: userRepo}
 }

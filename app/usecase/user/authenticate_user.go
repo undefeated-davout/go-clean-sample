@@ -11,6 +11,12 @@ type AuthenticateUserUseCase struct {
 	userRepo domain.UserRepository
 }
 
+type UserAuthenticator interface {
+	Authenticate(email, password string) (*domain.User, error)
+}
+
+var _ UserAuthenticator = (*AuthenticateUserUseCase)(nil)
+
 func NewAuthenticateUserUseCase(userRepo domain.UserRepository) *AuthenticateUserUseCase {
 	return &AuthenticateUserUseCase{userRepo: userRepo}
 }

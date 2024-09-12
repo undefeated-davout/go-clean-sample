@@ -10,6 +10,8 @@ type MySQLAssetRepository struct {
 	conn *sql.DB
 }
 
+var _ domain.AssetRepository = (*MySQLAssetRepository)(nil)
+
 func NewMySQLAssetRepository(conn *sql.DB) domain.AssetRepository {
 	return &MySQLAssetRepository{conn: conn}
 }

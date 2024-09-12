@@ -6,6 +6,18 @@
 - Pythonのyfinanceライブラリから価格情報は取得
 - 指標: 期待リターン、リスク、シャープレシオ
 
+## setup
+
+```bash
+docker-compose up -d
+```
+
+## run test
+
+```bash
+docker compose exec app go test ./...
+```
+
 ## directory structure
 
 ```bash

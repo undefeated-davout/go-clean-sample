@@ -4,6 +4,7 @@ import (
 	"errors"
 
 	"github.com/undefeated-davout/portfolio-simulator/app/domain"
+	"golang.org/x/crypto/bcrypt"
 )
 
 type MockUserRepository struct {
@@ -17,6 +18,12 @@ func NewMockUserRepository() *MockUserRepository {
 }
 
 func (r *MockUserRepository) Save(user domain.User) error {
+	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(user.Password), bcrypt.DefaultCost)
+	if err != nil {
+		return err
+	}
+	user.Password = string(hashedPassword)
+
 	r.users[user.Email] = &user
 	return nil
 }

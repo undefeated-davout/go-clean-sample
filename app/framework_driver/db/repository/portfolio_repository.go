@@ -35,7 +35,7 @@ func (r *MySQLPortfolioRepository) Save(portfolio domain.Portfolio) error {
 
 	// 各銘柄を保存
 	for _, asset := range portfolio.Assets {
-		_, err := tx.Exec("INSERT INTO portfolio_assets (portfolio_id, ticker, weight) VALUES (?, ?, ?)", portfolioID, asset.Ticker, asset.Weight)
+		_, err := tx.Exec("INSERT INTO assets (portfolio_id, ticker, weight) VALUES (?, ?, ?)", portfolioID, asset.Ticker, asset.Weight)
 		if err != nil {
 			tx.Rollback()
 			return err
@@ -55,7 +55,7 @@ func (r *MySQLPortfolioRepository) GetByID(id int) (*domain.Portfolio, error) {
 	}
 
 	// 銘柄情報を取得
-	rows, err := r.conn.Query("SELECT ticker, weight FROM portfolio_assets WHERE portfolio_id = ?", id)
+	rows, err := r.conn.Query("SELECT ticker, weight FROM assets WHERE portfolio_id = ?", id)
 	if err != nil {
 		return nil, err
 	}
@@ -81,7 +81,7 @@ func (r *MySQLPortfolioRepository) Delete(id int) error {
 	}
 
 	// ポートフォリオに紐づく資産を削除
-	_, err = tx.Exec("DELETE FROM portfolio_assets WHERE portfolio_id = ?", id)
+	_, err = tx.Exec("DELETE FROM assets WHERE portfolio_id = ?", id)
 	if err != nil {
 		tx.Rollback()
 		return err
